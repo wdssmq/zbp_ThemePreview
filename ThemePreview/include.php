@@ -27,7 +27,7 @@ function ThemePreview_QQ($robot, $msg)
     $app = new App();
     if ($app->LoadInfoByXml('theme', $cont) == true) {
       SetTheme($cont, $cont);
-      $zbp->BuildTemplate();
+      ThemePreview_Build();
       $reply .= "切换成功\n";
       $reply .= $zbp->host;
     }
@@ -66,7 +66,7 @@ function ThemePreview_Rewrite($inpurl, $url)
     $zbp->Config('ThemePreview')->last = $last;
     $zbp->SaveConfig('ThemePreview');
     SetTheme($m["id"], str_replace(".css", "", $m["style"]));
-    $zbp->BuildTemplate();
+    ThemePreview_Build();
     RedirectByScript($zbp->host);
     return null;
   }
@@ -89,6 +89,19 @@ function ThemePreview_GenTable(&$array = array())
     }
     echo "<p>----</p>";
   }
+}
+function ThemePreview_Build()
+{
+  global $zbp;
+  InstallPlugin($zbp->theme);
+  $zbp->BuildTemplate();
+  $zbp->AddBuildModule('previous');
+  $zbp->AddBuildModule('calendar');
+  $zbp->AddBuildModule('comments');
+  $zbp->AddBuildModule('archives');
+  $zbp->AddBuildModule('tags');
+  $zbp->AddBuildModule('authors');
+  $zbp->BuildModule();
 }
 // function ThemePreview_Path($file, $t = 'path')
 // {
