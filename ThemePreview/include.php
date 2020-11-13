@@ -55,6 +55,7 @@ function ThemePreview_QQ($robot, $msg)
 function ThemePreview_Rewrite($inpurl, $url)
 {
   global $zbp;
+  $url = trim($url,"/");
   $m = array();
   if (preg_match("/tPre\/(?<id>.+)\/(?<style>.+)/", $url, $m) == 1) {
     $GLOBALS['hooks']['Filter_Plugin_ViewAuto_Begin']['ThemePreview_Rewrite'] = PLUGIN_EXITSIGNAL_RETURN;
