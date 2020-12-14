@@ -55,13 +55,17 @@ function ThemePreview_QQ($robot, $msg)
 function ThemePreview_Rewrite($inpurl, $url)
 {
   global $zbp;
-  $url = trim($url,"/");
+  $url = trim($url, "/");
   $m = array();
   if (preg_match("/tPre\/(?<id>.+)\/(?<style>.+)/", $url, $m) == 1) {
     $GLOBALS['hooks']['Filter_Plugin_ViewAuto_Begin']['ThemePreview_Rewrite'] = PLUGIN_EXITSIGNAL_RETURN;
-    $last = floor(time() / 600);
-    if ($last === $zbp->Config('ThemePreview')->last) {
-      RedirectByScript($zbp->host . "#10分钟内只能切换一次");
+    $last = floor(time() / 1800);
+    if ($last === $zbp->Config('ThemePreview')->last && !$zbp->CheckRights("root")) {
+      if (function_exists('xnxf_geetest_ShowCapt') && xnxf_geetest_ShowCapt("切换主题") === "pass") {
+        RedirectByScript($zbp->host);
+      } else {
+        RedirectByScript($zbp->host . "#30分钟内只能切换一次");
+      }
       return;
     }
     $zbp->Config('ThemePreview')->last = $last;
