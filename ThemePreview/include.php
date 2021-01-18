@@ -44,10 +44,9 @@ function ThemePreview_QQ($robot, $msg)
   // $robot->WriteDB("log", $reply, __LINE__);
 
   // 原路径回复的话封装进类里？？？
-  $uin = array();
-  $uin["user_id"] = $msg["user_id"];
+  $uin = $msg["user_id"];
   if (isset($msg["group_id"])) {
-    $uin["group_id"] = $msg["group_id"];
+    $uin = $msg["group_id"];
   }
   // $reply = "收到的信息是：{$msg["message"]}";
   $robot->SendMsg($type, $uin, $reply);
